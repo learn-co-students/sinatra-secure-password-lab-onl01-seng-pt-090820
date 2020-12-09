@@ -1,0 +1,7 @@
+<h1>Hello, <%=current_user.username%></h1>
+
+<p>Your current balance is: <%=current_user.balance%></p>
+<form method=POST action="/withdraw">
+    <p>Withdrawal Amount: <input type="float" name="withdraw"></p>
+    <input type="submit" value="Withdraw">
+</form>

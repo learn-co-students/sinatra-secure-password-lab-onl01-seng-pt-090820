@@ -1,0 +1,7 @@
+<h1>Hello, <%=current_user.username%></h1>
+
+<p>Your current balance is: <%=current_user.balance%></p>
+<form method=POST action="/deposit">
+    <p>Deposit Amount: <input type="float" name="deposit"></p>
+    <input type="submit" value="Deposit">
+</form>
