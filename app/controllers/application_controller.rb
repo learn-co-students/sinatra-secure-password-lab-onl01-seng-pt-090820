@@ -17,22 +17,57 @@ class ApplicationController < Sinatra::Base
   end
 
   post "/signup" do
-    #your code here
+    user = User.new(params)
+    
+    if params.values.any?{|value| value.blank?}
+      redirect '/failure'
+    elsif user.save
+      redirect "/login"
+    end
 
   end
 
   get '/account' do
-    @user = User.find(session[:user_id])
+    @user = User.find_by(id: session[:user_id])
     erb :account
   end
 
+  get '/deposit' do
+    erb :deposit
+  end
+  
+  post '/deposit' do
+    @user = User.find_by(id: session[:user_id])
+    @deposit = params[:deposit].to_i
+    erb :'/account'
+  end
+  
+  get '/withdrawal' do
+    erb :withdrawal
+  end
+  
+  post '/withdrawal' do
+    user = User.find_by(id: session[:user_id])
+    
+    if params[:withdrawal].to_i > user.balance
+      redirect 'withdrawal'
+    else
+      user.balance -= params[:withdrawal].to_i
+    end
+  end
 
   get "/login" do
     erb :login
   end
 
   post "/login" do
-    ##your code here
+    user = User.find_by(username: params[:username])
+    if user && user.authenticate(params[:password])
+      session[:user_id] = user.id
+      redirect '/account'
+    else
+      redirect '/failure'
+    end
   end
 
   get "/failure" do
